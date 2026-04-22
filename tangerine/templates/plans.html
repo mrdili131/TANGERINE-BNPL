@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tangerine - To'lov tariflari</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root { --tangerine: #F28500; }
+        body { background-color: #f4f7f6; }
+        
+        /* NAVBAR (O'zgarmas sxema) */
+        .navbar { background-color: white !important; border-bottom: 3px solid var(--tangerine); }
+        .navbar-brand { color: var(--tangerine) !important; font-weight: 900; letter-spacing: 1px; }
+
+        .page-title { font-weight: 800; color: #333; margin-bottom: 5px; }
+        .page-subtitle { color: #888; margin-bottom: 30px; }
+
+        /* TARIF KARTALARI */
+        .plan-card {
+            background: white;
+            border-radius: 15px;
+            border: 2px solid transparent;
+            overflow: hidden;
+            transition: 0.3s;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            height: 100%;
+        }
+
+        .plan-header {
+            background: #e9f0f7;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #dee2e6;
+            transition: 0.3s;
+        }
+
+        .plan-body {
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+
+        .plan-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .plan-label { color: #777; }
+        .plan-value { font-weight: 600; color: #333; }
+
+        /* AKTIV HOLATI (TANGERINE) */
+        .plan-card.active {
+            border-color: var(--tangerine);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(242, 133, 0, 0.15);
+        }
+
+        .plan-card.active .plan-header {
+            background: var(--tangerine);
+            color: white;
+        }
+
+        .plan-card.active .plan-header .text-muted {
+            color: rgba(255,255,255,0.8) !important;
+        }
+
+        .monthly-amount { font-size: 1.4rem; font-weight: 800; }
+        .term-length { font-size: 1.1rem; border-left: 1px solid #ccc; padding-left: 15px; }
+    </style>
+</head>
+<body>
+
+    {% include 'navbar.html' %}
+
+    <div class="container my-5">
+        <h2 class="page-title">Bo'lib to'lash variantlari</h2>
+        <p class="page-subtitle">Mos nasiya variantini tanlang</p>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="plan-card" onclick="selectPlan(this)">
+                    <div class="plan-header d-flex justify-content-center align-items-center gap-3">
+                        <div>
+                            <div class="monthly-amount">766 667 so'm</div>
+                            <div class="small text-muted">Oylik to'lov</div>
+                        </div>
+                        <div class="term-length">
+                            <div class="fw-bold fs-5">3 oy</div>
+                            <div class="small text-muted">Muddati</div>
+                        </div>
+                    </div>
+                    <div class="plan-body">
+                        <div class="plan-row">
+                            <span class="plan-label">Ustama</span>
+                            <span class="plan-value text-danger">15.00%</span>
+                        </div>
+                        <div class="plan-row">
+                            <span class="plan-label">Muddatli to'lov narxi</span>
+                            <span class="plan-value">2 300 000 so'm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="plan-card" onclick="selectPlan(this)">
+                    <div class="plan-header d-flex justify-content-center align-items-center gap-3">
+                        <div>
+                            <div class="monthly-amount">416 667 so'm</div>
+                            <div class="small text-muted">Oylik to'lov</div>
+                        </div>
+                        <div class="term-length">
+                            <div class="fw-bold fs-5">6 oy</div>
+                            <div class="small text-muted">Muddati</div>
+                        </div>
+                    </div>
+                    <div class="plan-body">
+                        <div class="plan-row">
+                            <span class="plan-label">Ustama</span>
+                            <span class="plan-value text-danger">25.00%</span>
+                        </div>
+                        <div class="plan-row">
+                            <span class="plan-label">Muddatli to'lov narxi</span>
+                            <span class="plan-value">2 500 000 so'm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="plan-card active" onclick="selectPlan(this)">
+                    <div class="plan-header d-flex justify-content-center align-items-center gap-3">
+                        <div>
+                            <div class="monthly-amount">288 889 so'm</div>
+                            <div class="small text-muted">Oylik to'lov</div>
+                        </div>
+                        <div class="term-length">
+                            <div class="fw-bold fs-5">9 oy</div>
+                            <div class="small text-muted">Muddati</div>
+                        </div>
+                    </div>
+                    <div class="plan-body">
+                        <div class="plan-row">
+                            <span class="plan-label">Ustama</span>
+                            <span class="plan-value">30.00%</span>
+                        </div>
+                        <div class="plan-row">
+                            <span class="plan-label">Muddatli to'lov narxi</span>
+                            <span class="plan-value">2 600 000 so'm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="plan-card" onclick="selectPlan(this)">
+                    <div class="plan-header d-flex justify-content-center align-items-center gap-3">
+                        <div>
+                            <div class="monthly-amount">230 000 so'm</div>
+                            <div class="small text-muted">Oylik to'lov</div>
+                        </div>
+                        <div class="term-length">
+                            <div class="fw-bold fs-5">12 oy</div>
+                            <div class="small text-muted">Muddati</div>
+                        </div>
+                    </div>
+                    <div class="plan-body">
+                        <div class="plan-row">
+                            <span class="plan-label">Ustama</span>
+                            <span class="plan-value text-danger">38.00%</span>
+                        </div>
+                        <div class="plan-row">
+                            <span class="plan-label">Muddatli to'lov narxi</span>
+                            <span class="plan-value">2 760 000 so'm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="plan-card" onclick="selectPlan(this)">
+                    <div class="plan-header d-flex justify-content-center align-items-center gap-3">
+                        <div>
+                            <div class="monthly-amount">143 334 so'm</div>
+                            <div class="small text-muted">Oylik to'lov</div>
+                        </div>
+                        <div class="term-length">
+                            <div class="fw-bold fs-5">24 oy</div>
+                            <div class="small text-muted">Muddati</div>
+                        </div>
+                    </div>
+                    <div class="plan-body">
+                        <div class="plan-row">
+                            <span class="plan-label">Ustama</span>
+                            <span class="plan-value text-danger">72.00%</span>
+                        </div>
+                        <div class="plan-row">
+                            <span class="plan-label">Muddatli to'lov narxi</span>
+                            <span class="plan-value">3 440 000 so'm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-5 text-center">
+            <button class="btn btn-warning text-white px-5 py-3 fw-bold rounded-pill shadow"><i class="bi bi-arrow-left ms-2"></i> ORQAGA QAYTISH</button>
+            <button class="btn btn-warning text-white px-5 py-3 fw-bold rounded-pill shadow">DAVOM ETTIRISH <i class="bi bi-arrow-right ms-2"></i></button>
+        </div>
+    </div>
+
+    <script>
+        function selectPlan(element) {
+            // Hamma kartalardan 'active' klassini olib tashlash
+            document.querySelectorAll('.plan-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            // Bosilgan kartaga 'active' klassini qo'shish
+            element.classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tangerine - Tasdiqlash</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root { --tangerine: #F28500; }
+        body { background-color: #f4f7f6; }
+        
+        /* NAVBAR (O'zgarmas sxema) */
+        .navbar { background-color: white !important; border-bottom: 3px solid var(--tangerine); }
+        .navbar-brand { color: var(--tangerine) !important; font-weight: 900; letter-spacing: 1px; }
+
+        .summary-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            border: 1px solid #eee;
+        }
+
+        .section-title {
+            color: var(--tangerine);
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .data-label { font-size: 0.8rem; color: #888; margin-bottom: 2px; }
+        .data-value { font-weight: 600; color: #333; margin-bottom: 15px; }
+
+        .product-table { font-size: 0.9rem; }
+        .product-table thead { background-color: #f8f9fa; }
+
+        .highlight-box {
+            background-color: #fff8f0;
+            border: 1px dashed var(--tangerine);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .btn-confirm {
+            background-color: var(--tangerine);
+            color: white;
+            font-weight: 700;
+            padding: 15px 30px;
+            border-radius: 12px;
+            border: none;
+            transition: 0.3s;
+        }
+        .btn-confirm:hover { background-color: #d67600; color: white; transform: translateY(-2px); }
+        
+        .btn-print {
+            background-color: #343a40;
+            color: white;
+            font-weight: 700;
+            padding: 15px 30px;
+            border-radius: 12px;
+            border: none;
+            transition: 0.3s;
+        }
+        .btn-print:hover { background-color: #000; color: white; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand fs-3" href="#">TANGERINE</a>
+            <div class="d-flex align-items-center gap-3">
+                <select class="form-select border-warning" style="width: auto;">
+                    <option selected>Tasdiqlash</option>
+                    <option value="1">Yangi shartnoma</option>
+                    <option value="2">Hujjatlar</option>
+                </select>
+                <span class="d-none d-md-inline fw-bold text-secondary border-start ps-3">A. Dilmuhammad</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                
+                <h2 class="fw-bold mb-4">Ma'lumotlarni tasdiqlash</h2>
+
+                <div class="summary-card">
+                    <div class="row">
+                        <div class="col-md-6 border-end">
+                            <div class="section-title"><i class="bi bi-person-fill"></i> Mijoz ma'lumotlari</div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="data-label">F.I.SH</div>
+                                    <div class="data-value">Farxodov Sanjarbek</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="data-label">JSHSHIR</div>
+                                    <div class="data-value">31204950020114</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="data-label">Telefon</div>
+                                    <div class="data-value">+998 90 123 45 67</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="data-label">Mavjud limit</div>
+                                    <div class="data-value text-success">25,000,000 so'm</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 ps-md-4">
+                            <div class="section-title"><i class="bi bi-shop"></i> Hamkor do'kon</div>
+                            <div class="data-label">Magazin nomi</div>
+                            <div class="data-value text-primary">MediaPark Sergeli</div>
+                            <div class="data-label">Do'kon STIR</div>
+                            <div class="data-value">304558221</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="section-title"><i class="bi bi-box-seam-fill"></i> Tanlangan mahsulotlar</div>
+                    <div class="table-responsive">
+                        <table class="table align-middle product-table">
+                            <thead>
+                                <tr>
+                                    <th>Mahsulot nomi</th>
+                                    <th class="text-center">Soni</th>
+                                    <th class="text-end">Narxi</th>
+                                    <th class="text-end">Jami</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>iPhone 15 Pro Max, 256GB Natural Titanium</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-end">18,500,000 so'm</td>
+                                    <td class="text-end fw-bold">18,500,000 so'm</td>
+                                </tr>
+                                <tr>
+                                    <td>Silikon Case (Blue)</td>
+                                    <td class="text-center">2</td>
+                                    <td class="text-end">250,000 so'm</td>
+                                    <td class="text-end fw-bold">500,000 so'm</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="section-title"><i class="bi bi-calculator-fill"></i> Shartnoma shartlari</div>
+                    <div class="row g-4">
+                        <div class="col-md-3 col-6 text-center">
+                            <div class="data-label">Umumiy summa</div>
+                            <div class="data-value fs-5">19,000,000 so'm</div>
+                        </div>
+                        <div class="col-md-3 col-6 text-center border-start">
+                            <div class="data-label">Muddat</div>
+                            <div class="data-value fs-5 text-primary">12 oy</div>
+                        </div>
+                        <div class="col-md-3 col-6 text-center border-start">
+                            <div class="data-label">Ustama foizi</div>
+                            <div class="data-value fs-5 text-danger">38.00%</div>
+                        </div>
+                        <div class="col-md-3 col-6 text-center border-start">
+                            <div class="data-label">Oylik to'lov</div>
+                            <div class="data-value fs-5 text-success">2,185,000 so'm</div>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box mt-4">
+                        <div class="row">
+                            <div class="col-md-6 border-end border-warning border-opacity-25">
+                                <div class="data-label">Boshlang'ich to'lov</div>
+                                <div class="data-value m-0">2,000,000 so'm</div>
+                            </div>
+                            <div class="col-md-6 ps-md-4">
+                                <div class="data-label">Birinchi to'lov sanasi</div>
+                                <div class="data-value m-0">15.05.2026</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column flex-md-row gap-3 mt-4">
+                    <button class="btn btn-confirm flex-grow-1">
+                        <i class="bi bi-check-circle-fill me-2"></i>SHARTNOMANI TASDIQLASH
+                    </button>
+                    <button class="btn btn-print">
+                        <i class="bi bi-printer-fill me-2"></i>SHARTNOMANI CHIQARISH
+                    </button>
+                    <button class="btn btn-outline-secondary py-3 px-4 rounded-3">
+                        BEKOR QILISH
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

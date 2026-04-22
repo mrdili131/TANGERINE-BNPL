@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tangerine - Anderrayter Paneli</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root { --tangerine: #F28500; --bg-light: #f4f7f6; --success-green: #28a745; --danger-red: #dc3545; }
+        body { background-color: var(--bg-light); font-family: 'Inter', sans-serif; }
+        
+        .navbar { background-color: white !important; border-bottom: 3px solid var(--tangerine); }
+        .navbar-brand { color: var(--tangerine) !important; font-weight: 900; letter-spacing: 1px; }
+
+        .underwriter-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #eee; }
+        
+        .score-badge { font-size: 1.5rem; font-weight: 800; padding: 15px; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 5px solid; }
+        .score-good { color: var(--success-green); border-color: #d4edda; }
+
+        .info-label { font-size: 0.75rem; color: #888; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+        .info-value { font-size: 1rem; color: #333; font-weight: 600; margin-bottom: 15px; }
+
+        .limit-input-box { background: #fff8f0; border: 2px solid var(--tangerine); border-radius: 15px; padding: 20px; }
+        
+        .form-control-lg { border-radius: 12px; border: 1px solid #ddd; font-weight: 700; }
+        
+        .btn-approve { background-color: var(--success-green); color: white; font-weight: bold; border-radius: 12px; padding: 15px; border: none; width: 100%; transition: 0.3s; }
+        .btn-reject { background-color: var(--danger-red); color: white; font-weight: bold; border-radius: 12px; padding: 15px; border: none; width: 100%; transition: 0.3s; }
+        .btn-approve:hover, .btn-reject:hover { opacity: 0.85; transform: translateY(-2px); }
+
+        @media (max-width: 576px) {
+            .underwriter-card { padding: 15px; }
+            .score-badge { width: 60px; height: 60px; font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">TANGERINE</a>
+            <div class="d-flex align-items-center">
+                <span class="badge bg-warning text-dark p-2 rounded-pill fw-bold">Anderrayter: Admin</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="underwriter-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold m-0 text-uppercase">Ariza tahlili (#A-2045)</h5>
+                        <span class="text-muted small">Kelgan vaqti: 21.04.2026 10:30</span>
+                    </div>
+
+                    <div class="row align-items-center border-bottom mb-4 pb-3">
+                        <div class="col-md-3 text-center mb-3 mb-md-0">
+                            <div class="score-badge score-good">85</div>
+                            <div class="small fw-bold mt-2 text-success">Skoring: YUQORI</div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="info-label">Mijoz</div>
+                                    <div class="info-value">Ergashev Murodjon</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="info-label">Daromad (Tasdiqlangan)</div>
+                                    <div class="info-value text-primary">15,000,000 UZS</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="info-label">Kredit tarixi</div>
+                                    <div class="info-value text-success">Ijobiy (A+)</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="info-label">Mavjud qarzlar</div>
+                                    <div class="info-value">0 UZS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold mb-3">Tizim tavsiyasi:</h6>
+                    <div class="alert alert-info border-0 rounded-4">
+                        <i class="bi bi-info-circle-fill me-2"></i> Tizim mijozga <strong>22,000,000 UZS</strong> gacha limit ajratishni tavsiya qiladi.
+                    </div>
+                </div>
+
+                <div class="underwriter-card">
+                    <h6 class="fw-bold mb-3">Qo'shimcha tekshiruvlar:</h6>
+                    <div class="d-flex flex-column gap-2">
+                        <div class="form-check border p-3 rounded-3">
+                            <input class="form-check-input ms-0 me-3" type="checkbox" id="check1" checked>
+                            <label class="form-check-label fw-bold" for="check1">Pasport haqiqiyligi tekshirildi</label>
+                        </div>
+                        <div class="form-check border p-3 rounded-3">
+                            <input class="form-check-input ms-0 me-3" type="checkbox" id="check2" checked>
+                            <label class="form-check-label fw-bold" for="check2">Mijoz selfisi pasportga mos keldi</label>
+                        </div>
+                        <div class="form-check border p-3 rounded-3">
+                            <input class="form-check-input ms-0 me-3" type="checkbox" id="check3">
+                            <label class="form-check-label fw-bold" for="check3">Daromad manbai telefon orqali tasdiqlandi</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="underwriter-card limit-input-box shadow-sm">
+                    <h5 class="fw-bold mb-4 text-center">Yakuniy Qaror</h5>
+                    
+                    <div class="mb-4">
+                        <label class="form-label info-label">Tasdiqlanadigan Limit Summasi</label>
+                        <div class="input-group input-group-lg">
+                            <input type="text" class="form-control form-control-lg border-0" value="20,000,000">
+                            <span class="input-group-text bg-transparent border-0 fw-bold">UZS</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label info-label">Anderrayter izohi</label>
+                        <textarea class="form-control rounded-4" rows="3" placeholder="Izoh qoldiring..."></textarea>
+                    </div>
+
+                    <div class="row g-2">
+                        <div class="col-12">
+                            <button class="btn btn-approve" onclick="confirmAction('tasdiqlandi')">
+                                <i class="bi bi-check-circle me-2"></i> LIMITNI TASDIQLASH
+                            </button>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-reject" onclick="confirmAction('rad etildi')">
+                                <i class="bi bi-x-circle me-2"></i> RAD ETISH
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function confirmAction(status) {
+            if(confirm('Haqiqatdan ham ariza ' + status + 'mi?')) {
+                alert('Mijozga SMS xabarnoma yuborildi. Holat: ' + status);
+                window.location.reload();
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

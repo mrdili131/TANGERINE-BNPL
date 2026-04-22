@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tangerine - Mijoz Qo'shish (Responsive)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root { --tangerine: #F28500; --bg-light: #f4f7f6; }
+        body { background-color: var(--bg-light); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        
+        /* NAVBAR RESPONSIVE */
+        .navbar { background-color: white !important; border-bottom: 3px solid var(--tangerine); padding: 10px 0; }
+        .navbar-brand { color: var(--tangerine) !important; font-weight: 900; letter-spacing: 1px; font-size: 1.5rem; }
+
+        .form-container {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-top: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* HEADER QISMI MOBILDA USTMA-UST */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .section-title { font-size: 1.25rem; font-weight: 700; color: #333; margin: 0; }
+
+        .input-group-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #888;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .form-label { font-size: 0.75rem; font-weight: 700; color: #666; text-transform: uppercase; margin-bottom: 6px; }
+        
+        .form-control, .form-select {
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 0.95rem;
+            border: 1px solid #dee2e6;
+        }
+
+        .btn-group-mobile{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap:20px;
+        }
+
+        /* TUGMALAR MOBILDA TO'LIQ ENIGA */
+        @media (max-width: 576px) {
+            .btn-group-mobile { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+            .btn-davom { width: 100%; order: 1; }
+            .btn-bekor { width: 100%; text-align: center; order: 2; margin: 0 !important; }
+            .navbar-brand { font-size: 1.2rem; }
+        }
+
+        .btn-davom { background-color: #ff5e5e; color: white; font-weight: bold; border-radius: 10px; padding: 12px 30px; border: none; transition: 0.2s; }
+        .btn-davom:hover { background-color: #e54d4d; opacity: 0.9; }
+        .btn-bekor { color: #ff5e5e; font-weight: bold; text-decoration: none; margin-left: 20px; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    {% include 'navbar.html' %}
+
+    <div class="container">
+        <div class="form-container">
+            <div class="page-header">
+                <h1 class="section-title">Mijoz ma'lumotlari</h1>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="input-group-title">Hujjat</div>
+                {% if msg %}
+                <span style="color: red;padding: 10px;">{{msg}}</span>
+                <hr>
+                {% endif %}
+                <div class="row g-3 mb-4">
+                    <div class="col-4 col-md-2">
+                        <label class="form-label">Pinfl</label>
+                        <input name="passport_pinfl" type="text" class="form-control" placeholder="PINFL" style="text-transform: uppercase;">
+                    </div>
+                    <div class="col-4 col-md-2">
+                        <label class="form-label">Pasport seriya</label>
+                        <input name="passport_serial" type="text" class="form-control" placeholder="AD1001100" style="text-transform: uppercase;">
+                    </div>
+                </div>
+
+                <div class="input-group-title">Shaxsiy ma'lumotlar</div>
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-4">
+                        <label name="birth_date" class="form-label">Tug'ilgan sana</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    <!-- <div class="col-12 col-md-4">
+                        <label class="form-label">Oilaviy holati</label>
+                        <select class="form-select">
+                            <option selected disabled>Tanlang</option>
+                            <option>Uylangan / Turmushga chiqqan</option>
+                            <option>Uylanmagan / Turmushga chiqmagan</option>
+                        </select>
+                    </div> -->
+                </div>
+
+                <div class="input-group-title">Daromad</div>
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-4">
+                        <label class="form-label">Oylik daromad</label>
+                        <div class="input-group">
+                            <input name="income" type="number" class="form-control" placeholder="0.00">
+                            <span class="input-group-text bg-light text-muted small">UZS</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group-mobile">
+                    <a href="/" class="btn-bekor">Bekor qilish</a>
+                    <button class="btn-davom" type="submit">Davom etish</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
