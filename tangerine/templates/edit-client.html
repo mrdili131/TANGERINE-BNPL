@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tangerine - Mijozni tahrirlash</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        :root { --tangerine: #F28500; --dark-slate: #1e293b; }
+        body { background-color: #f8fafc; font-family: 'Inter', sans-serif; }
+        
+        .navbar { background-color: white !important; border-bottom: 3px solid var(--tangerine); }
+        .navbar-brand { color: var(--tangerine) !important; font-weight: 900; }
+
+        .edit-card {
+            background: white;
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            margin-top: 30px;
+            margin-bottom: 50px;
+        }
+
+        .form-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        .form-label i { margin-right: 5px; color: var(--tangerine); }
+
+        .form-control, .form-select {
+            border-radius: 12px;
+            padding: 12px 15px;
+            border: 1.5px solid #e2e8f0;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        .form-control:focus {
+            border-color: var(--tangerine);
+            box-shadow: 0 0 0 4px rgba(242, 133, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--dark-slate);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-save {
+            background: var(--tangerine);
+            color: white;
+            font-weight: 700;
+            padding: 15px 40px;
+            border-radius: 15px;
+            border: none;
+            transition: 0.3s;
+            width: 100%;
+        }
+        .btn-save:hover {
+            background: #d67600;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(242, 133, 0, 0.2);
+        }
+
+        .btn-cancel {
+            background: #f1f5f9;
+            color: #64748b;
+            font-weight: 700;
+            padding: 15px 40px;
+            border-radius: 15px;
+            border: none;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    {% include 'navbar.html' %}
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="edit-card">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <div>
+                                <h3 class="fw-bold m-0">Profilni tahrirlash</h3>
+                                <p class="text-muted small">Mijozning barcha shaxsiy va pasport ma'lumotlarini yangilash</p>
+                            </div>
+                            <i class="bi bi-person-gear display-5 text-warning opacity-50"></i>
+                        </div>
+
+                        <div class="section-title"><span>1. SHAXSIY MA'LUMOTLAR</span></div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label class="form-label">Familiya</label>
+                                <input type="text" name="last_name" class="form-control" value="{{client.last_name}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Ism</label>
+                                <input type="text" name="first_name" class="form-control" value="{{client.first_name}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Otasining ismi</label>
+                                <input type="text" name="middle_name" class="form-control" value="{{client.middle_name}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label"><i class="bi bi-calendar-event"></i> Tug'ilgan sana</label>
+                                <input type="date" name="birth_date" class="form-control" value="{{client.birth_date|date:'Y-m-d'}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Jinsi</label>
+                                <select name="gender" class="form-select">
+                                    <option value="male" {% if client.gender == 'male' %}selected{% endif %}>Erkak</option>
+                                    <option value="female" {% if client.gender == 'female' %}selected{% endif %}>Ayol</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label"><i class="bi bi-wallet2"></i> Oylik daromad (UZS)</label>
+                                <input type="number" name="income" class="form-control fw-bold text-success" value="{{client.income}}">
+                            </div>
+                        </div>
+
+                        <div class="section-title"><span>2. PASPORT VA IDENTIFIKATSIYA</span></div>
+                        <div class="row g-3 mb-5">
+                            <div class="col-md-4">
+                                <label class="form-label">Pasport Seriya va Raqam</label>
+                                <input type="text" name="passport_serial" class="form-control" value="{{client.passport_serial}}" maxlength="9">
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label">PINFL (14 talik raqam)</label>
+                                <input type="text" name="passport_pinfl" class="form-control fw-bold" value="{{client.passport_pinfl}}" maxlength="14">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Berilgan sana</label>
+                                <input type="date" name="passport_got_date" class="form-control" value="{{client.passport_got_date|date:'Y-m-d'}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Amal qilish muddati</label>
+                                <input type="date" name="passport_expiry_date" class="form-control" value="{{client.passport_expiry_date|date:'Y-m-d'}}">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Kim tomonidan berilgan (Viloyat/Tuman IIB)</label>
+                                <input type="text" name="passport_got_region" class="form-control" value="{{client.passport_got_region}}">
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-cancel" onclick="history.back()">BEKOR QILISH</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-save">
+                                    <i class="bi bi-check-all me-2"></i> O'ZGARISHLARNI SAQLASH
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

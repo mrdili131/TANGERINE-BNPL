@@ -55,8 +55,9 @@
                         </div>
                         <div class="col-md-3 col-6 text-md-end">
                             <div class="info-label">Telefon</div>
-                            <div class="info-value">+998 94 832 99 51</div>
+                            <div class="info-value">{{client.numbers.all.0.number}}</div>
                         </div>
+                    <a href="{% url 'edit_client' client.id %}" class="btn btn-tangerine w-50 py-2">Yangilash</a>
                     </div>
                 </div>
             </div>
@@ -109,13 +110,13 @@
                                 </tr>
                             </thead>
                             <tbody id="contacts-display-body">
-                                <tr>
+                                <!-- <tr>
                                     <td class="fw-bold">+998 90 628 72 73</td>
                                     <td>Ulug'bek (hamkasb)</td>
                                     <td class="text-end">
                                         <button class="btn btn-link text-danger p-0" onclick="this.closest('tr').remove()"><i class="bi bi-trash3-fill"></i></button>
                                     </td>
-                                </tr>
+                                </tr> -->
                             </tbody>
                         </table>
                     </div>
@@ -164,7 +165,7 @@
                     <h5 class="fw-bold mb-3">Yangi kontakt</h5>
                     <input type="text" id="new-phone" class="form-control border-warning mb-3" placeholder="Telefon raqam">
                     <input type="text" id="new-desc" class="form-control border-warning mb-4" placeholder="Izoh">
-                    <button class="btn btn-tangerine w-100 py-3" onclick="saveContact()">SAQLASH</button>
+                    <button class="btn btn-tangerine w-100 py-3" onclick="add_number()">SAQLASH</button>
                 </div>
             </div>
         </div>
@@ -184,18 +185,6 @@
     </div>
 
     <script>
-        function saveContact() {
-            const phone = document.getElementById('new-phone').value;
-            const desc = document.getElementById('new-desc').value;
-            if(phone && desc) {
-                const body = document.getElementById('contacts-display-body');
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td class="fw-bold">${phone}</td><td>${desc}</td><td class="text-end"><button class="btn btn-link text-danger p-0" onclick="this.closest('tr').remove()"><i class="bi bi-trash3-fill"></i></button></td>`;
-                body.appendChild(tr);
-                bootstrap.Modal.getInstance(document.getElementById('contactModal')).hide();
-            }
-        }
-
         function startLimitCalc() {
             const box = document.getElementById('limit-box');
             box.innerHTML = '<div class="text-center"><div class="spinner-border text-warning mb-2"></div><p class="small fw-bold">Tekshirilmoqda...</p></div>';
@@ -208,8 +197,107 @@
             const content = document.getElementById('modal-card-content');
             content.innerHTML = `<div class="modal-body p-4 text-center"><i class="bi bi-shield-lock text-warning fs-1"></i><h5 class="fw-bold mt-3">SMS tasdiqlash</h5><input type="text" class="form-control border-warning text-center fs-4 fw-bold mb-4" placeholder="******"><button class="btn btn-tangerine w-100 py-3" data-bs-dismiss="modal">TASDIQLASH</button></div>`;
         }
+
+        function getCookie(name) {
+            let cookieValue = null;
+
+            if (document.cookie && document.cookie !== '') {
+                let cookies = document.cookie.split(';');
+
+                for (let i = 0; i < cookies.length; i++) {
+                    let cookie = cookies[i].trim();
+
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+
+            return cookieValue;
+        }
+
+
+
+
+        // Custom scripts
+        async function get_numbers(){
+            let resp = await fetch("/get-numbers/{{client.id}}");
+            if (!resp.ok){
+                alert("Xatolik: FIN-TANGERINE ga murojaat qiling")
+            } else {
+                const data = await resp.json()
+
+                let container = document.getElementById("contacts-display-body");
+                container.innerHTML = ''
+                Object.values(data).forEach(i=>{
+                    container.innerHTML += `
+                    <tr>
+                        <td class="fw-bold">${i["number"]}</td>
+                        <td>${i["name"]}</td>
+                        <td class="text-end">
+                            <button class="btn btn-link text-danger p-0" onclick="delete_number(this,${i["id"]})"><i class="bi bi-trash3-fill"></i></button>
+                        </td>
+                    </tr>
+                    `
+                })
+            }
+        }
+
+        function delete_number(button,id){
+            fetch(`/delete-number/${id}`)
+                .then(response=>response.json())
+                .then(data=>{
+                    if(data.status === true){
+                        button.closest('tr').remove()
+                        get_numbers()
+                    } else {
+                        alert("Xatolik: FIN-TANGERINE ga murojaat qiling")
+                    }
+                    
+                })
+        }
+
+        function add_number(){
+            let number = document.getElementById("new-phone").value
+            let name = document.getElementById("new-desc").value
+            if (number && name){
+                $.ajax({
+                url: "/add-number/",
+                method: "POST",
+                headers:{
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                data: {
+                    client_id: '{{client.id}}',
+                    number: number,
+                    name: name
+                },
+                success: function( result ) {
+                    if (result.status === true){
+                        get_numbers()
+                        document.getElementById("new-phone").value = ""
+                        document.getElementById("new-desc").value = ""
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('contactModal'));
+                        modal.hide();
+                    } else {
+                        alert("Xatolik: Raqam qo‘shib bo‘lmadi !")
+                    }
+                }
+                });
+            } else {
+                alert("Xatolik: Kataklarni to‘ldiring !")
+            }
+        }
+
+
+        // Init
+        get_numbers()
+
+
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
 </body>
 </html>

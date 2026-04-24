@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import ClientForm
+from django.contrib.auth.decorators import login_required
+from .forms import ClientForm, UpdateClientForm
 from django.db.models import Q
 from django.utils import timezone
 from datetime import datetime
@@ -65,10 +66,65 @@ class AddClientView(LoginRequiredMixin,View):
 class ClientView(LoginRequiredMixin,View):
     def get(self,request,id):
         client = Client.objects.get(id=id)
-        return render(request,'client.html',{"client":client})    
+        return render(request,'client.html',{"client":client})
+    
+class EditClientView(LoginRequiredMixin,View):
+    def get(self,request,client_id):
+        client = Client.objects.get(id=client_id)
+        form = UpdateClientForm(instance=client)
+        return render(request,'edit-client.html',{"client":client,"form":form})
+    
+    def post(self,request,client_id):
+        client = Client.objects.get(id=client_id)
+        form = UpdateClientForm(request.POST,instance=client)
+        if form.is_valid():
+            new_form = form.save(commit=False)
+            new_form.full_name = f"{form.cleaned_data["last_name"]} {form.cleaned_data["first_name"]} {form.cleaned_data["middle_name"]}"
+            new_form.save()
+            return redirect('client',id=client.id)
+        return render(request,'edit-client.html',{"client":client,"form":form})
+        
 
 
 
+@login_required
 def get_numbers(request,client_id):
-    numbers = PhoneNumber.objects.filter(client_id=client_id)
-    return JsonResponse(numbers.data(),safe=False)
+    data = {}
+    numbers = PhoneNumber.objects.filter(client_id=client_id).order_by('id')
+    for i in numbers:
+        data[i.id] = {
+            "id":i.id,
+            "number":i.number,
+            "name":i.name,
+        }
+    return JsonResponse(data)
+
+@login_required
+def delete_number(request,id):
+    try:
+        number = PhoneNumber.objects.get(id=id)
+        number.delete()
+        return JsonResponse({"status":True})
+    except:
+        return JsonResponse({"status":False})
+
+@login_required   
+def add_number(request):
+    if request.method == "POST":
+        client_id = request.POST.get("client_id")
+        name = request.POST.get("name")
+        number = request.POST.get("number")
+        if (client_id,name,number):
+            try:
+                phone_number = PhoneNumber(
+                    client = Client.objects.get(id=client_id),
+                    name = name,
+                    number = number
+                )
+                phone_number.save()
+                return JsonResponse({"status":True})
+            except:
+                return JsonResponse({"status":False})
+        else:
+            return JsonResponse({"status":False})
+    return JsonResponse({"status":False})
