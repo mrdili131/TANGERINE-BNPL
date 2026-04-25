@@ -9,6 +9,13 @@ gender = [
     ('female','Ayol')
 ]
 
+c_status = [
+    ('given','Berilgan'),
+    ('rejected','Rad etilgan'),
+    ('pending','Jarayonda'),
+    ('closed','Yopilgan')
+]
+
 class Shop(models.Model):
     id = models.UUIDField(default=uuid.uuid4,primary_key=True,unique=True,editable=False)
     name = models.CharField(max_length=100)
@@ -35,6 +42,8 @@ class Client(models.Model):
 
     income = models.DecimalField(max_digits=10,decimal_places=0,default=0)
 
+    credit_limit = models.DecimalField(max_digits=10,decimal_places=0,default=0)
+
     full_name = models.CharField(max_length=250, default='NULLED NAME')
     branch = models.ForeignKey(Branch,on_delete=models.CASCADE,null=True,blank=True,related_name='clients')
     desc = models.TextField(null=True,blank=True)
@@ -54,13 +63,26 @@ class Application(models.Model):
 
 class Contract(models.Model):
     id = models.UUIDField(default=uuid.uuid4,primary_key=True,unique=True,editable=False)
-    client = models.ForeignKey(Client,on_delete=models.SET_NULL,null=True,blank=True)
+    client = models.ForeignKey(Client,on_delete=models.SET_NULL,null=True,blank=True,related_name='contracts')
     amount = models.DecimalField(max_digits=10,decimal_places=0,default=0)
     application = models.ForeignKey(Application,on_delete=models.SET_NULL,null=True,blank=True)
     shop = models.ForeignKey(Shop,on_delete=models.SET_NULL,null=True,blank=True)
     pay_day = models.IntegerField(default=datetime.datetime.now().day)
     date = models.DateField(auto_now_add=True,null=True,blank=True)
+    status = models.CharField(max_length=30,choices=c_status,default='pending')
     created_at = models.DateTimeField(auto_now_add=True,null=True,blank=True)
+
+class Product(models.Model):
+    id = models.UUIDField(default=uuid.uuid4,primary_key=True,unique=True,editable=False)
+    name = models.CharField(max_length=100)
+    quantity = models.IntegerField(default=1)
+    price = models.DecimalField(max_digits=10,decimal_places=0,default=0)
+    total_price = models.DecimalField(max_digits=10,decimal_places=0,default=0)
+    shop = models.ForeignKey(Shop,on_delete=models.SET_NULL,null=True,default=True)
+    contract = models.ForeignKey(Contract,on_delete=models.SET_NULL,null=True,blank=True)
+
+    def __str__(self):
+        return self.name
 
 class MonthlyPayment(models.Model):
     pass

@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# FOR NGROK TESTING
+# CSRF_TRUSTED_ORIGINS = ['https://9ebe-84-54-90-76.ngrok-free.app']
+
 
 # Application definition
 

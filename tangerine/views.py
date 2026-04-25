@@ -14,6 +14,11 @@ class IndexView(LoginRequiredMixin,View):
     def get(self,request):
         return render(request,'index.html')
     
+class ContractView(LoginRequiredMixin,View):
+    def get(self,request,contract_id):
+        contract = Contract.objects.get(id=contract_id)
+        return render(request,'contract.html',{"contract":contract})
+
 class ContractsView(LoginRequiredMixin,View):
     def get(self,request):
         start_date = request.GET.get('start_date', '')
@@ -128,3 +133,10 @@ def add_number(request):
         else:
             return JsonResponse({"status":False})
     return JsonResponse({"status":False})
+
+@login_required
+def create_contract(request,client_id):
+    contract = Contract(client=Client.objects.get(id=client_id))
+    contract.save()
+    return redirect('contract',contract_id=contract.id)
+

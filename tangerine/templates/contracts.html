@@ -119,7 +119,15 @@
                             <td><strong>{{i.id}}</strong><br><small class="text-muted">{{i.date|date:'d-m-Y'}}</small></td>
                             <td>{{i.client.full_name}}<br><small class="text-muted">{{i.client.passport_pinfl}}</small></td>
                             <td>{{i.shop.name}}<br><small class="text-muted">STIR: {{i.shop.stir}}</small></td>
-                            <td><span class="status-badge bg-success text-success bg-opacity-10 border border-success">Berilgan</span></td>
+                            {% if i.status == "given" %}
+                                <td><span class="status-badge bg-success text-success bg-opacity-10 border border-success">Berilgan</span></td>
+                            {% elif i.status == "rejected" %}
+                                <td><span class="status-badge bg-danger text-danger bg-opacity-10 border border-danger">Rad etilgan</span></td>
+                            {% elif i.status == "pending" %}
+                                <td><span class="status-badge bg-warning text-warning bg-opacity-10 border border-warning">Jarayonda</span></td>
+                            {% else %}
+                                <td><span class="status-badge bg-secondary text-secondary bg-opacity-10 border border-secondary">Yopilgan</span></td>
+                            {% endif %}
                             <td class="text-end">
                                 <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-printer"></i></button>
                                 <button class="btn btn-sm btn-outline-dark ms-1" onclick="window.location.href='/contract/{{i.id}}'"><i class="bi bi-eye"></i></button>
@@ -136,7 +144,15 @@
             <div class="doc-card">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <span class="fw-bold text-primary fs-5">{{i.id}}</span>
-                    <span class="status-badge bg-success text-success bg-opacity-10 border border-success">To'langan</span>
+                    {% if i.status == "given" %}
+                        <span class="status-badge bg-success text-success bg-opacity-10 border border-success">Berilgan</span>
+                    {% elif i.status == "rejected" %}
+                        <span class="status-badge bg-danger text-danger bg-opacity-10 border border-danger">Rad etilgan</span>
+                    {% elif i.status == "pending" %}
+                        <span class="status-badge bg-warning text-warning bg-opacity-10 border border-warning">Jarayonda</span>
+                    {% else %}
+                        <span class="status-badge bg-secondary text-secondary bg-opacity-10 border border-secondary">Yopilgan</span>
+                    {% endif %}
                 </div>
 
                 <div class="row">
@@ -153,14 +169,14 @@
                         <div class="info-value fw-bold">{{i.client.full_name}}</div>
                     </div>
                     <div class="col-12 mt-1 py-2 bg-light rounded px-2">
-                        <div class="info-label">Hamkor / STIR</div>
+                        <div class="info-label">Tashkilot / STIR</div>
                         <div class="info-value mb-0">{{i.shop.name}} ({{i.shop.stir}})</div>
                     </div>
                 </div>
 
                 <div class="d-flex gap-2 mt-3">
                     <button class="btn btn-outline-secondary w-50 py-2"><i class="bi bi-printer"></i></button>
-                    <button class="btn btn-outline-dark w-50 py-2"><i class="bi bi-eye"></i></button>
+                    <button class="btn btn-outline-dark w-50 py-2" onclick="window.location.href='/contract/{{i.id}}'"><i class="bi bi-eye"></i></button>
                 </div>
             </div>
             {% endfor %}

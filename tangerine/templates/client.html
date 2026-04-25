@@ -127,7 +127,7 @@
                 <div class="section-card">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h5 class="fw-bold mb-4">Arizalar tarixi</h5>
-                        <button class="btn btn-tangerine btn-sm">+ Yangi qo'shish</button>
+                        <button class="btn btn-tangerine btn-sm" onclick="window.location.href = '/create-contract/{{client.id}}'">+ Yangi qo'shish</button>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-custom table-hover align-middle">
@@ -135,21 +135,29 @@
                                 <tr>
                                     <th>ARIZA №</th>
                                     <th>SANA</th>
-                                    <th>MAHSULOTLAR</th>
                                     <th>SUMMA</th>
                                     <th>STATUS</th>
                                     <th class="text-end">HUJJAT</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="fw-bold">#A-1025</td>
-                                    <td class="small text-muted">21.04.2026</td>
-                                    <td>iPhone 15 Pro Max</td>
-                                    <td class="fw-bold">18,500,000 so'm</td>
-                                    <td><span class="badge bg-success bg-opacity-10 text-success border border-success px-3 rounded-pill">Faol</span></td>
-                                    <td class="text-end"><button class="btn btn-sm btn-light border"><i class="bi bi-file-earmark-pdf text-danger"></i></button></td>
-                                </tr>
+                                {% for i in client.contracts.all %}
+                                    <tr>
+                                        <td class="fw-bold">{{i.id}}</td>
+                                        <td class="small text-muted">{{i.created_at|date:'d-m-Y'}}</td>
+                                        <td class="fw-bold">{{i.amount}} so'm</td>
+                                        {% if i.status == "given" %}
+                                            <td><span class="badge bg-success bg-opacity-10 text-success border border-success px-3 rounded-pill">Faol</span></td>
+                                        {% elif i.status == "rejected" %}
+                                            <td><span class="badge bg-danger bg-opacity-10 text-danger border border-danger px-3 rounded-pill">Rad etilgan</span></td>
+                                        {% elif i.status == "pending" %}
+                                            <td><span class="badge bg-warning bg-opacity-10 text-warning border border-warning px-3 rounded-pill">Jarayonda</span></td>
+                                        {% else %}
+                                            <td><span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary px-3 rounded-pill">Yopilgan</span></td>
+                                        {% endif %}
+                                        <td class="text-end"><button class="btn btn-sm btn-light border"><i class="bi bi-file-earmark-pdf text-danger"></i></button></td>
+                                    </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

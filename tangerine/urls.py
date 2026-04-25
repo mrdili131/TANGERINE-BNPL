@@ -5,6 +5,9 @@ from . import views
 urlpatterns = [
     path('',views.IndexView.as_view(),name='home'),
     path('contracts-list/',views.ContractsView.as_view(),name='contracts'),
+    path('contract/<uuid:contract_id>/',views.ContractView.as_view(),name='contract'),
+
+
     path('clients-view',views.AllClientsView.as_view(),name='clients'),
 
     path('client/<uuid:id>/',views.ClientView.as_view(),name='client'),
@@ -17,5 +20,7 @@ urlpatterns = [
 
     path('delete-number/<int:id>/',views.delete_number,name='delete_number'),
 
-    path('add-number/',views.add_number,name='add_number')
+    path('add-number/',views.add_number,name='add_number'),
+
+    path('create-contract/<uuid:client_id>/',views.create_contract,name='create_contract')
 ]

@@ -1,147 +1,298 @@
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tangerine - Shartnoma</title>
+    <title>Tangerine | Yangi Shartnoma</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        :root { --tangerine: #F28500; }
-        body { background-color: #f4f7f6; }
-        
-        /* NAVBAR (O'zgarmas sxema) */
-        .navbar { background-color: white !important; border-bottom: 3px solid var(--tangerine); }
-        .navbar-brand { color: var(--tangerine) !important; font-weight: 900; letter-spacing: 1px; }
-
-        .form-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); margin-bottom: 20px; }
-
-        /* MAHSULOT BLOKI */
-        .product-item {
-            background-color: #f8f9fa;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border: 1px solid #dee2e6;
-            position: relative;
+        :root { 
+            --tangerine: #F28500; 
+            --tangerine-light: #fff8f0;
+            --tangerine-dark: #d67600;
+            --dark-slate: #1e293b;
+            --bg-soft: #f8fafc;
         }
 
-        .btn-add {
-            border: 2px dashed var(--tangerine);
-            color: var(--tangerine);
-            font-weight: bold;
-            width: 100%;
-            padding: 12px;
-            border-radius: 12px;
-            background: transparent;
+        body { 
+            background-color: var(--bg-soft); 
+            color: var(--dark-slate);
+        }
+
+        /* NAVIGATSIYA */
+        .back-circle {
+            width: 48px; height: 48px;
+            display: flex; align-items: center; justify-content: center;
+            background: white; border: 1px solid #e2e8f0;
+            border-radius: 16px; color: var(--dark-slate);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+        }
+        .back-circle:hover { 
+            background: var(--tangerine); 
+            color: white; 
+            border-color: var(--tangerine);
+            transform: translateX(-5px);
+        }
+
+        /* CARD STYLE */
+        .tangerine-card {
+            background: white;
+            border-radius: 28px;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            padding: 32px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.02);
+            margin-bottom: 24px;
+        }
+
+        .product-item {
+            background: var(--bg-soft);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid transparent;
+            position: relative;
             transition: 0.3s;
         }
-        .btn-add:hover { background-color: var(--tangerine); color: white; }
+        .product-item:hover {
+            border-color: var(--tangerine);
+            background: white;
+            box-shadow: 0 10px 25px rgba(242, 133, 0, 0.08);
+        }
 
-        .total-section { background: #212529; color: white; border-radius: 20px; padding: 25px; position: sticky; top: 100px; }
-        .limit-info { background: white; border-radius: 15px; padding: 15px; border-left: 5px solid #198754; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        /* FORMS */
+        .form-label { font-weight: 700; font-size: 0.75rem; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .input-tangerine {
+            border: 2px solid #f1f5f9;
+            background: #f1f5f9;
+            border-radius: 14px;
+            padding: 14px 18px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .input-tangerine:focus {
+            background: white;
+            border-color: var(--tangerine);
+            box-shadow: 0 0 0 4px rgba(242, 133, 0, 0.1);
+            outline: none;
+        }
+
+        /* BUTTONS */
+        .btn-add-item {
+            background: var(--tangerine-light);
+            color: var(--tangerine);
+            border: 2px dashed var(--tangerine);
+            border-radius: 16px;
+            padding: 16px;
+            font-weight: 700;
+            width: 100%;
+            transition: 0.3s;
+        }
+        .btn-add-item:hover { background: var(--tangerine); color: white; border-style: solid; }
+
+        /* SUMMARY SIDEBAR */
+        .sticky-summary { position: sticky; top: 24px; }
+        .summary-box {
+            background: var(--dark-slate);
+            border-radius: 32px;
+            padding: 35px;
+            color: white;
+        }
+        .limit-pill {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 8px solid #10b981;
+        }
+
+        .total-amount { font-size: 2.2rem; font-weight: 800; color: white; font-family: 'Plus Jakarta Sans'; }
+        
+        .btn-next {
+            background: var(--tangerine);
+            color: white;
+            border: none;
+            border-radius: 18px;
+            padding: 20px;
+            font-weight: 800;
+            width: 100%;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 25px rgba(242, 133, 0, 0.3);
+            transition: 0.3s;
+        }
+        .btn-next:hover:not(:disabled) { background: var(--tangerine-dark); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(242, 133, 0, 0.4); }
+        .btn-next:disabled { background: #475569; box-shadow: none; cursor: not-allowed; }
+
+        .btn-close-custom {
+            background: #fee2e2; color: #ef4444; border: none;
+            width: 32px; height: 32px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.2s;
+        }
+        .btn-close-custom:hover { background: #ef4444; color: white; }
     </style>
 </head>
 <body>
 
     {% include 'navbar.html' %}
 
-    <div class="container my-4">
+    <div class="container my-5">
+        <div class="d-flex align-items-center mb-5">
+            <a href="javascript:history.back()" class="back-circle shadow-sm me-4">
+                <i class="bi bi-chevron-left fs-5"></i>
+            </a>
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1">
+                        <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-muted fw-bold">Mijozlar</a></li>
+                        <li class="breadcrumb-item active fw-bold text-warning">Yangi shartnoma</li>
+                    </ol>
+                </nav>
+                <h2 class="fw-800 m-0 text-dark" style="letter-spacing: -1px;">Mahsulotlarni tanlash</h2>
+                <hr>
+                <h3 class="fw-800 m-0 text-dark" style="letter-spacing: -1px;">{{contract.client.full_name}}</h3>
+            </div>
+        </div>
+
         <div class="row g-4">
-            
             <div class="col-lg-8">
-                <div class="form-card">
-                    <h5 class="fw-bold mb-4 text-uppercase"><i class="bi bi-cart-plus me-2 text-warning"></i>1. Mahsulotlar</h5>
-                    
+                <div class="tangerine-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-warning bg-opacity-10 p-2 rounded-3 me-3">
+                                <i class="bi bi-basket3-fill text-warning fs-4"></i>
+                            </div>
+                            <h5 class="fw-800 m-0">Savatcha</h5>
+                        </div>
+                        <span class="badge bg-light text-dark border-0 rounded-pill px-3 py-2 fw-bold">
+                            <span id="item-count">1</span> mahsulot
+                        </span>
+                    </div>
+
                     <div id="product-container">
                         <div class="product-item">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label class="form-label small fw-bold">Maxsulot nomi</label>
-                                    <input type="text" class="form-control border-warning" placeholder="Nomini kiriting">
+                                    <label class="form-label">Mahsulot nomi</label>
+                                    <input type="text" name="p_name[]" class="form-control input-tangerine" placeholder="Masalan: iPhone 15 Pro" required>
                                 </div>
-                                <div class="col-6 col-md-3">
-                                    <label class="form-label small fw-bold">Nechtaligi</label>
-                                    <input type="number" class="form-control border-warning" value="1" min="1">
+                                <div class="col-6 col-md-2">
+                                    <label class="form-label">Soni</label>
+                                    <input type="number" name="p_qty[]" class="form-control input-tangerine qty-input" value="1" min="1" oninput="calculate()">
                                 </div>
-                                <div class="col-6 col-md-3">
-                                    <label class="form-label small fw-bold">Summasi</label>
-                                    <input type="number" class="form-control border-warning" placeholder="0">
+                                <div class="col-6 col-md-4">
+                                    <label class="form-label">Narxi (UZS)</label>
+                                    <input type="number" name="p_price[]" class="form-control input-tangerine price-input text-warning" placeholder="0" oninput="calculate()" required>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <button class="btn btn-add" onclick="addProduct()">
-                        <i class="bi bi-plus-lg me-2"></i>YANA MAHSULOT QO'SHISH
+                    <button type="button" class="btn btn-add-item" onclick="addItem()">
+                        <i class="bi bi-plus-lg me-2"></i>RO'YXATGA QO'SHISH
                     </button>
-                </div>
-
-                <div class="form-card">
-                    <h5 class="fw-bold mb-4 text-uppercase"><i class="bi bi-gear-fill me-2 text-warning"></i>2. To'lov shartlari</h5>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold">To‘lov sanasi</label>
-                            <input type="number" class="form-control border-warning" placeholder="0">
-                        </div>
-                    </div>
                 </div>
             </div>
 
             <div class="col-lg-4">
-                <div class="limit-info mb-4 text-center">
-                    <div class="small text-muted text-uppercase fw-bold">Mavjud limit</div>
-                    <div class="h4 fw-bold m-0 text-success">25,000,000 so'm</div>
-                </div>
+                <div class="sticky-summary">
+                    <div class="limit-pill shadow-sm">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted small fw-bold mb-0 text-uppercase">Mavjud limit</p>
+                                <h4 class="fw-800 text-success m-0" id="limit-val" data-limit="20000000">{{contract.client.credit_limit|intcomma}}</h4>
+                            </div>
+                            <div class="text-success opacity-25">
+                                <i class="bi bi-database-fill-check fs-1"></i>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="total-section shadow-lg">
-                    <h5 class="fw-bold border-bottom border-secondary pb-3 mb-3 text-warning text-center">HISOB-KITOB</h5>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Jami:</span>
-                        <span class="fw-bold">0 so'm</span>
+                    <div class="summary-box shadow-lg">
+                        <p class="text-warning text-uppercase small fw-800 mb-4" style="letter-spacing: 2px;">Hisob-kitob</p>
+                        
+                        <div class="mb-5">
+                            <label class="text-secondary small fw-bold mb-1 d-block">UMUMIY SUMMA</label>
+                            <div class="total-amount" id="display-total">0</div>
+                            <span class="text-secondary fw-bold">O'zbek so'mi</span>
+                        </div>
+
+                        <div id="error-msg" class="alert alert-danger bg-danger bg-opacity-10 border-0 text-white small d-none mb-4 rounded-4 animate__animated animate__shakeX">
+                            <i class="bi bi-x-circle-fill me-2"></i> Limitdan oshib ketdi!
+                        </div>
+
+                        <button type="submit" class="btn btn-next" id="next-btn" disabled>
+                            KEYINGI BOSQICH <i class="bi bi-arrow-right-short ms-2"></i>
+                        </button>
+
                     </div>
-                    <div class="d-flex justify-content-between mb-2 text-danger">
-                        <span>Boshlang'ich:</span>
-                        <span>- 0 so'm</span>
-                    </div>
-                    <hr class="border-secondary">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <span class="h6 m-0">Kredit:</span>
-                        <span class="h4 fw-bold text-info">0 so'm</span>
-                    </div>
-                    <button class="btn btn-warning text-white w-100 py-3 fw-bold rounded-3">YARATISH</button>
                 </div>
             </div>
-
         </div>
     </div>
 
     <script>
-        function addProduct() {
+        function addItem() {
             const container = document.getElementById('product-container');
-            const newItem = document.createElement('div');
-            newItem.className = 'product-item';
-            newItem.innerHTML = `
+            const div = document.createElement('div');
+            div.className = 'product-item animate__animated animate__fadeInUp';
+            div.innerHTML = `
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label small fw-bold">Maxsulot nomi</label>
-                        <input type="text" class="form-control border-warning" placeholder="Nomini kiriting">
+                        <label class="form-label">Mahsulot nomi</label>
+                        <input type="text" name="p_name[]" class="form-control input-tangerine" required>
                     </div>
-                    <div class="col-6 col-md-3">
-                        <label class="form-label small fw-bold">Nechtaligi</label>
-                        <input type="number" class="form-control border-warning" value="1" min="1">
+                    <div class="col-6 col-md-2">
+                        <label class="form-label">Soni</label>
+                        <input type="number" name="p_qty[]" class="form-control input-tangerine qty-input" value="1" min="1" oninput="calculate()">
                     </div>
-                    <div class="col-6 col-md-3">
-                        <label class="form-label small fw-bold">Summasi</label>
-                        <input type="number" class="form-control border-warning" placeholder="0">
+                    <div class="col-6 col-md-4">
+                        <label class="form-label">Narxi</label>
+                        <div class="d-flex align-items-center">
+                            <input type="number" name="p_price[]" class="form-control input-tangerine price-input text-warning me-2" oninput="calculate()" required>
+                            <button type="button" class="btn-close-custom" onclick="this.closest('.product-item').remove(); calculate();">
+                                <i class="bi bi-trash3-fill"></i>
+                            </button>
+                        </div>
                     </div>
-                    <button type="button" class="btn-close position-absolute top-0 end-0 m-2" onclick="this.parentElement.remove()"></button>
                 </div>
             `;
-            container.appendChild(newItem);
+            container.appendChild(div);
+            document.getElementById('item-count').innerText = document.querySelectorAll('.product-item').length;
+        }
+
+        function calculate() {
+            let total = 0;
+            const prices = document.querySelectorAll('.price-input');
+            const qties = document.querySelectorAll('.qty-input');
+            const limit = parseInt(document.getElementById('limit-val').getAttribute('data-limit'));
+
+            prices.forEach((el, i) => {
+                total += (parseFloat(el.value) || 0) * (parseFloat(qties[i].value) || 0);
+            });
+
+            const formatted = new Intl.NumberFormat('uz-UZ').format(total);
+            document.getElementById('display-total').innerText = formatted;
+
+            const err = document.getElementById('error-msg');
+            const btn = document.getElementById('next-btn');
+
+            if (total > limit) {
+                err.classList.remove('d-none');
+                btn.disabled = true;
+                document.getElementById('display-total').classList.add('text-danger');
+            } else if (total > 0) {
+                err.classList.add('d-none');
+                btn.disabled = false;
+                document.getElementById('display-total').classList.remove('text-danger');
+            } else {
+                btn.disabled = true;
+            }
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
