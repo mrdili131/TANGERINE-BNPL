@@ -79,7 +79,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10,decimal_places=0,default=0)
     total_price = models.DecimalField(max_digits=10,decimal_places=0,default=0)
     shop = models.ForeignKey(Shop,on_delete=models.SET_NULL,null=True,default=True)
-    contract = models.ForeignKey(Contract,on_delete=models.SET_NULL,null=True,blank=True)
+    contract = models.ForeignKey(Contract,on_delete=models.SET_NULL,null=True,blank=True,related_name='products')
 
     def __str__(self):
         return self.name

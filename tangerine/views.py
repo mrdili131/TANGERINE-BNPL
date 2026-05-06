@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.utils import timezone
 from datetime import datetime
 from django.http import JsonResponse
+import json
 
 
 class IndexView(LoginRequiredMixin,View):
@@ -17,7 +18,8 @@ class IndexView(LoginRequiredMixin,View):
 class ContractView(LoginRequiredMixin,View):
     def get(self,request,contract_id):
         contract = Contract.objects.get(id=contract_id)
-        return render(request,'contract.html',{"contract":contract})
+        shops = Shop.objects.all()
+        return render(request,'contract.html',{"contract":contract,"shops":shops})
 
 class ContractsView(LoginRequiredMixin,View):
     def get(self,request):
@@ -88,6 +90,8 @@ class EditClientView(LoginRequiredMixin,View):
             new_form.save()
             return redirect('client',id=client.id)
         return render(request,'edit-client.html',{"client":client,"form":form})
+    
+    
         
 
 
@@ -140,3 +144,32 @@ def create_contract(request,client_id):
     contract.save()
     return redirect('contract',contract_id=contract.id)
 
+@login_required
+def update_cart(request):
+    data = json.loads(request.body)
+    try:
+        total = 0
+
+        contract = Contract.objects.get(id=data["contract_id"])
+
+        contract.shop = Shop.objects.get(id=data["market_id"])
+        contract.save()
+
+        Product.objects.filter(contract=contract).delete()
+
+        for prod in data["products"]:
+            product = Product(
+                name = prod["name"],
+                quantity = prod["quantity"],
+                price = prod["unit_price"],
+                total_price = prod["subtotal"],
+                contract = contract,
+                shop = Shop.objects.get(id=data["market_id"])
+            )
+            product.save()
+            total += prod["subtotal"]
+        contract.amount = total
+        contract.save()
+        return JsonResponse({"status":True})
+    except:
+        return JsonResponse({"status":False,"msg":"Could not update"})

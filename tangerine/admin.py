@@ -6,5 +6,6 @@ admin.site.register([
     Client,
     Application,
     Contract,
-    PhoneNumber
+    PhoneNumber,
+    Product
 ])

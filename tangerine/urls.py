@@ -22,5 +22,7 @@ urlpatterns = [
 
     path('add-number/',views.add_number,name='add_number'),
 
-    path('create-contract/<uuid:client_id>/',views.create_contract,name='create_contract')
+    path('create-contract/<uuid:client_id>/',views.create_contract,name='create_contract'),
+
+    path('update-cart/',views.update_cart,name='update_cart')
 ]

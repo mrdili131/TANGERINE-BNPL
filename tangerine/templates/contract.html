@@ -20,26 +20,24 @@
 
         body { 
             background-color: var(--bg-soft); 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
             color: var(--dark-slate);
         }
 
-        /* NAVIGATSIYA */
         .back-circle {
             width: 48px; height: 48px;
             display: flex; align-items: center; justify-content: center;
             background: white; border: 1px solid #e2e8f0;
             border-radius: 16px; color: var(--dark-slate);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             text-decoration: none;
         }
         .back-circle:hover { 
             background: var(--tangerine); 
             color: white; 
-            border-color: var(--tangerine);
             transform: translateX(-5px);
         }
 
-        /* CARD STYLE */
         .tangerine-card {
             background: white;
             border-radius: 28px;
@@ -55,17 +53,15 @@
             padding: 24px;
             margin-bottom: 16px;
             border: 1px solid transparent;
-            position: relative;
             transition: 0.3s;
         }
         .product-item:hover {
             border-color: var(--tangerine);
             background: white;
-            box-shadow: 0 10px 25px rgba(242, 133, 0, 0.08);
         }
 
-        /* FORMS */
-        .form-label { font-weight: 700; font-size: 0.75rem; color: #64748b; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .form-label { font-weight: 700; font-size: 0.75rem; color: #64748b; text-transform: uppercase; margin-bottom: 8px; }
+        
         .input-tangerine {
             border: 2px solid #f1f5f9;
             background: #f1f5f9;
@@ -81,7 +77,6 @@
             outline: none;
         }
 
-        /* BUTTONS */
         .btn-add-item {
             background: var(--tangerine-light);
             color: var(--tangerine);
@@ -94,23 +89,16 @@
         }
         .btn-add-item:hover { background: var(--tangerine); color: white; border-style: solid; }
 
-        /* SUMMARY SIDEBAR */
-        .sticky-summary { position: sticky; top: 24px; }
         .summary-box {
             background: var(--dark-slate);
             border-radius: 32px;
             padding: 35px;
             color: white;
-        }
-        .limit-pill {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-left: 8px solid #10b981;
+            position: sticky;
+            top: 24px;
         }
 
-        .total-amount { font-size: 2.2rem; font-weight: 800; color: white; font-family: 'Plus Jakarta Sans'; }
+        .total-amount { font-size: 2.2rem; font-weight: 800; color: white; }
         
         .btn-next {
             background: var(--tangerine);
@@ -120,20 +108,15 @@
             padding: 20px;
             font-weight: 800;
             width: 100%;
-            font-size: 1.1rem;
-            box-shadow: 0 10px 25px rgba(242, 133, 0, 0.3);
             transition: 0.3s;
         }
-        .btn-next:hover:not(:disabled) { background: var(--tangerine-dark); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(242, 133, 0, 0.4); }
-        .btn-next:disabled { background: #475569; box-shadow: none; cursor: not-allowed; }
+        .btn-next:disabled { background: #475569; cursor: not-allowed; opacity: 0.7; }
 
         .btn-close-custom {
             background: #fee2e2; color: #ef4444; border: none;
             width: 32px; height: 32px; border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
-            transition: 0.2s;
         }
-        .btn-close-custom:hover { background: #ef4444; color: white; }
     </style>
 </head>
 <body>
@@ -141,110 +124,129 @@
     {% include 'navbar.html' %}
 
     <div class="container my-5">
+        <!-- HEADER -->
         <div class="d-flex align-items-center mb-5">
             <a href="javascript:history.back()" class="back-circle shadow-sm me-4">
                 <i class="bi bi-chevron-left fs-5"></i>
             </a>
             <div>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-1">
-                        <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-muted fw-bold">Mijozlar</a></li>
-                        <li class="breadcrumb-item active fw-bold text-warning">Yangi shartnoma</li>
-                    </ol>
-                </nav>
-                <h2 class="fw-800 m-0 text-dark" style="letter-spacing: -1px;">Mahsulotlarni tanlash</h2>
-                <hr>
-                <h3 class="fw-800 m-0 text-dark" style="letter-spacing: -1px;">{{contract.client.full_name}}</h3>
+                <h2 class="fw-800 m-0">Mahsulotlarni tanlash</h2>
+                <p class="text-muted m-0">{{contract.client.full_name}} uchun yangi shartnoma</p>
             </div>
         </div>
 
         <div class="row g-4">
             <div class="col-lg-8">
                 <div class="tangerine-card">
+                    
+                    <!-- 1. DO'KONNI TANLASH -->
+                    <div class="mb-5 p-4 rounded-4" style="background: var(--bg-soft); border: 1px solid #e2e8f0;">
+                        <label class="form-label d-flex align-items-center mb-3">
+                            <i class="bi bi-shop me-2 text-warning fs-5"></i> Savdo nuqtasi (Market)
+                        </label>
+                        <select id="shop-select" class="form-select input-tangerine" onchange="calculate()" required>
+                            <option value="" selected disabled>Do'konni tanlang...</option>
+                            {% for i in shops %}
+                                <option value="{{i.id}}" {% if contract.shop.id == i.id %} selected {% endif %}>{{i.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- 2. SAVATCHA -->
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="d-flex align-items-center">
-                            <div class="bg-warning bg-opacity-10 p-2 rounded-3 me-3">
-                                <i class="bi bi-basket3-fill text-warning fs-4"></i>
-                            </div>
-                            <h5 class="fw-800 m-0">Savatcha</h5>
-                        </div>
-                        <span class="badge bg-light text-dark border-0 rounded-pill px-3 py-2 fw-bold">
+                        <h5 class="fw-800 m-0"><i class="bi bi-basket3 me-2 text-warning"></i>Savatcha</h5>
+                        <span class="badge bg-light text-dark rounded-pill px-3 py-2 fw-bold">
                             <span id="item-count">1</span> mahsulot
                         </span>
                     </div>
-
                     <div id="product-container">
+                        {% for i in contract.products.all %}
+                        <!-- Birinchi mahsulot -->
                         <div class="product-item">
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Mahsulot nomi</label>
-                                    <input type="text" name="p_name[]" class="form-control input-tangerine" placeholder="Masalan: iPhone 15 Pro" required>
+                                    <input type="text" name="p_name[]" class="form-control input-tangerine" placeholder="Masalan: iPhone 15 Pro" value="{{i.name}}">
                                 </div>
                                 <div class="col-6 col-md-2">
                                     <label class="form-label">Soni</label>
-                                    <input type="number" name="p_qty[]" class="form-control input-tangerine qty-input" value="1" min="1" oninput="calculate()">
+                                    <input type="number" name="p_qty[]" class="form-control input-tangerine qty-input" value="{{i.quantity}}" min="1" oninput="calculate()">
                                 </div>
                                 <div class="col-6 col-md-4">
                                     <label class="form-label">Narxi (UZS)</label>
-                                    <input type="number" name="p_price[]" class="form-control input-tangerine price-input text-warning" placeholder="0" oninput="calculate()" required>
+                                    <div class="d-flex align-items-center">
+                                        <input type="number" name="p_price[]" class="form-control input-tangerine price-input text-warning fw-bold me-2" value="{{i.price}}" placeholder="0" oninput="calculate()">
+                                        <button type="button" class="btn-close-custom" onclick="this.closest('.product-item').remove(); calculate();">
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        {% endfor %}
                     </div>
-
-                    <button type="button" class="btn btn-add-item" onclick="addItem()">
-                        <i class="bi bi-plus-lg me-2"></i>RO'YXATGA QO'SHISH
+                    <button type="button" class="btn btn-add-item mt-3" onclick="addItem()">
+                        <i class="bi bi-plus-lg me-2"></i>MAHSULOT QO'SHISH
                     </button>
                 </div>
             </div>
 
+            <!-- 3. SUMMARY SIDEBAR -->
             <div class="col-lg-4">
-                <div class="sticky-summary">
-                    <div class="limit-pill shadow-sm">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <p class="text-muted small fw-bold mb-0 text-uppercase">Mavjud limit</p>
-                                <h4 class="fw-800 text-success m-0" id="limit-val" data-limit="20000000">{{contract.client.credit_limit|intcomma}}</h4>
-                            </div>
-                            <div class="text-success opacity-25">
-                                <i class="bi bi-database-fill-check fs-1"></i>
-                            </div>
-                        </div>
+                <div class="limit-pill bg-white shadow-sm p-4 rounded-4 mb-4 border-start border-5 border-success">
+                    <p class="text-muted small fw-bold mb-0 text-uppercase">Mijoz limiti</p>
+                    <h4 class="fw-800 text-success m-0" id="limit-val" data-limit="20000000">{{contract.client.credit_limit|intcomma}} UZS</h4>
+                </div>
+
+                <div class="summary-box shadow-lg">
+                    <p class="text-warning text-uppercase small fw-800 mb-4">Umumiy hisob</p>
+                    
+                    <div class="mb-5">
+                        <label class="text-secondary small fw-bold d-block">JAMI SUMMA</label>
+                        <div class="total-amount" id="display-total">0</div>
+                        <span class="text-secondary fw-bold">O'zbek so'mi</span>
                     </div>
 
-                    <div class="summary-box shadow-lg">
-                        <p class="text-warning text-uppercase small fw-800 mb-4" style="letter-spacing: 2px;">Hisob-kitob</p>
-                        
-                        <div class="mb-5">
-                            <label class="text-secondary small fw-bold mb-1 d-block">UMUMIY SUMMA</label>
-                            <div class="total-amount" id="display-total">0</div>
-                            <span class="text-secondary fw-bold">O'zbek so'mi</span>
-                        </div>
-
-                        <div id="error-msg" class="alert alert-danger bg-danger bg-opacity-10 border-0 text-white small d-none mb-4 rounded-4 animate__animated animate__shakeX">
-                            <i class="bi bi-x-circle-fill me-2"></i> Limitdan oshib ketdi!
-                        </div>
-
-                        <button type="submit" class="btn btn-next" id="next-btn" disabled>
-                            KEYINGI BOSQICH <i class="bi bi-arrow-right-short ms-2"></i>
-                        </button>
-
+                    <div id="error-msg" class="alert alert-danger bg-danger bg-opacity-10 border-0 text-white small d-none mb-4">
+                        <i class="bi bi-exclamation-circle me-2"></i> Limitdan oshib ketdi!
                     </div>
+
+                    <button type="button" class="btn btn-next" id="next-btn" onclick="sendDataToBackend()" disabled>
+                        KEYINGI BOSQICH <i class="bi bi-arrow-right-short ms-2"></i>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Cookie nomi qidirilayotgan nom bilan mos keladimi?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+
         function addItem() {
             const container = document.getElementById('product-container');
             const div = document.createElement('div');
-            div.className = 'product-item animate__animated animate__fadeInUp';
+            div.className = 'product-item';
             div.innerHTML = `
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">Mahsulot nomi</label>
-                        <input type="text" name="p_name[]" class="form-control input-tangerine" required>
+                        <input type="text" name="p_name[]" class="form-control input-tangerine">
                     </div>
                     <div class="col-6 col-md-2">
                         <label class="form-label">Soni</label>
@@ -253,16 +255,16 @@
                     <div class="col-6 col-md-4">
                         <label class="form-label">Narxi</label>
                         <div class="d-flex align-items-center">
-                            <input type="number" name="p_price[]" class="form-control input-tangerine price-input text-warning me-2" oninput="calculate()" required>
+                            <input type="number" name="p_price[]" class="form-control input-tangerine price-input text-warning fw-bold me-2" oninput="calculate()">
                             <button type="button" class="btn-close-custom" onclick="this.closest('.product-item').remove(); calculate();">
-                                <i class="bi bi-trash3-fill"></i>
+                                <i class="bi bi-trash3"></i>
                             </button>
                         </div>
                     </div>
                 </div>
             `;
             container.appendChild(div);
-            document.getElementById('item-count').innerText = document.querySelectorAll('.product-item').length;
+            updateStatus();
         }
 
         function calculate() {
@@ -270,29 +272,89 @@
             const prices = document.querySelectorAll('.price-input');
             const qties = document.querySelectorAll('.qty-input');
             const limit = parseInt(document.getElementById('limit-val').getAttribute('data-limit'));
+            const shopId = document.getElementById('shop-select').value;
 
             prices.forEach((el, i) => {
-                total += (parseFloat(el.value) || 0) * (parseFloat(qties[i].value) || 0);
+                const p = parseFloat(el.value) || 0;
+                const q = parseFloat(qties[i].value) || 0;
+                total += p * q;
             });
 
-            const formatted = new Intl.NumberFormat('uz-UZ').format(total);
-            document.getElementById('display-total').innerText = formatted;
-
+            document.getElementById('display-total').innerText = new Intl.NumberFormat('uz-UZ').format(total);
+            
             const err = document.getElementById('error-msg');
             const btn = document.getElementById('next-btn');
 
-            if (total > limit) {
+            // Shartlar: Limitdan oshmasligi VA Do'kon tanlangan bo'lishi VA Summa 0 dan katta bo'lishi
+            const isOverLimit = total > limit;
+            const isShopSelected = shopId !== "";
+            const hasAmount = total > 0;
+
+            if (isOverLimit) {
                 err.classList.remove('d-none');
-                btn.disabled = true;
                 document.getElementById('display-total').classList.add('text-danger');
-            } else if (total > 0) {
-                err.classList.add('d-none');
-                btn.disabled = false;
-                document.getElementById('display-total').classList.remove('text-danger');
             } else {
-                btn.disabled = true;
+                err.classList.add('d-none');
+                document.getElementById('display-total').classList.remove('text-danger');
             }
+
+            btn.disabled = isOverLimit || !isShopSelected || !hasAmount;
+            updateStatus();
         }
+
+        function updateStatus() {
+            document.getElementById('item-count').innerText = document.querySelectorAll('.product-item').length;
+        }
+
+        function sendDataToBackend() {
+            const shopSelect = document.getElementById('shop-select');
+            const productNames = document.querySelectorAll('input[name="p_name[]"]');
+            const quantities = document.querySelectorAll('input[name="p_qty[]"]');
+            const prices = document.querySelectorAll('input[name="p_price[]"]');
+            
+            let payload = {
+                contract_id: '{{contract.id}}',
+                market_id: shopSelect.value,
+                market_name: shopSelect.options[shopSelect.selectedIndex].text,
+                products: [],
+                total_amount: 0
+            };
+
+            productNames.forEach((el, i) => {
+                const qty = parseFloat(quantities[i].value) || 0;
+                const price = parseFloat(prices[i].value) || 0;
+                const subtotal = qty * price;
+
+                if(el.value) {
+                    payload.products.push({
+                        name: el.value,
+                        quantity: qty,
+                        unit_price: price,
+                        subtotal: subtotal
+                    });
+                    payload.total_amount += subtotal;
+                }
+            });
+
+            // KONSOALGA CHIQARISH
+            console.log("%c--- TANGERINE ORDER DATA ---", "color: #F28500; font-weight: bold;");
+            console.log(JSON.stringify(payload, null, 2));
+            console.table(payload.products);
+
+            fetch("/update-cart/",{
+                method: "POST",
+                headers:{
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body:JSON.stringify(payload)
+            })
+            
+        }
+
+
+        // Init
+        calculate()
     </script>
 </body>
 </html>
