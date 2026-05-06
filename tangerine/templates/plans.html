@@ -1,3 +1,4 @@
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -81,140 +82,49 @@
         <p class="page-subtitle">Mos nasiya variantini tanlang</p>
 
         <div class="row g-4">
+            {% for key,val in apps.items %}
             <div class="col-md-4">
-                <div class="plan-card" onclick="selectPlan(this)">
+                <div class="plan-card" onclick="selectPlan(this,'{{key}}')">
                     <div class="plan-header d-flex justify-content-center align-items-center gap-3">
                         <div>
-                            <div class="monthly-amount">766 667 so'm</div>
+                            <div class="monthly-amount">{{val.monthly_payment|intcomma}} so'm</div>
                             <div class="small text-muted">Oylik to'lov</div>
                         </div>
                         <div class="term-length">
-                            <div class="fw-bold fs-5">3 oy</div>
+                            <div class="fw-bold fs-5">{{val.length}} oy</div>
                             <div class="small text-muted">Muddati</div>
                         </div>
                     </div>
                     <div class="plan-body">
                         <div class="plan-row">
                             <span class="plan-label">Ustama</span>
-                            <span class="plan-value text-danger">15.00%</span>
+                            <span class="plan-value text-danger">{{val.interest}}%</span>
                         </div>
                         <div class="plan-row">
                             <span class="plan-label">Muddatli to'lov narxi</span>
-                            <span class="plan-value">2 300 000 so'm</span>
+                            <span class="plan-value">{{val.total_with_interest|intcomma}} so'm</span>
+                        </div>
+                        <div class="plan-row">
+                            <span class="plan-label">Tana narxi</span>
+                            <span class="plan-value">{{val.total_amount|intcomma}} so'm</span>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-4">
-                <div class="plan-card" onclick="selectPlan(this)">
-                    <div class="plan-header d-flex justify-content-center align-items-center gap-3">
-                        <div>
-                            <div class="monthly-amount">416 667 so'm</div>
-                            <div class="small text-muted">Oylik to'lov</div>
-                        </div>
-                        <div class="term-length">
-                            <div class="fw-bold fs-5">6 oy</div>
-                            <div class="small text-muted">Muddati</div>
-                        </div>
-                    </div>
-                    <div class="plan-body">
-                        <div class="plan-row">
-                            <span class="plan-label">Ustama</span>
-                            <span class="plan-value text-danger">25.00%</span>
-                        </div>
-                        <div class="plan-row">
-                            <span class="plan-label">Muddatli to'lov narxi</span>
-                            <span class="plan-value">2 500 000 so'm</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="plan-card active" onclick="selectPlan(this)">
-                    <div class="plan-header d-flex justify-content-center align-items-center gap-3">
-                        <div>
-                            <div class="monthly-amount">288 889 so'm</div>
-                            <div class="small text-muted">Oylik to'lov</div>
-                        </div>
-                        <div class="term-length">
-                            <div class="fw-bold fs-5">9 oy</div>
-                            <div class="small text-muted">Muddati</div>
-                        </div>
-                    </div>
-                    <div class="plan-body">
-                        <div class="plan-row">
-                            <span class="plan-label">Ustama</span>
-                            <span class="plan-value">30.00%</span>
-                        </div>
-                        <div class="plan-row">
-                            <span class="plan-label">Muddatli to'lov narxi</span>
-                            <span class="plan-value">2 600 000 so'm</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="plan-card" onclick="selectPlan(this)">
-                    <div class="plan-header d-flex justify-content-center align-items-center gap-3">
-                        <div>
-                            <div class="monthly-amount">230 000 so'm</div>
-                            <div class="small text-muted">Oylik to'lov</div>
-                        </div>
-                        <div class="term-length">
-                            <div class="fw-bold fs-5">12 oy</div>
-                            <div class="small text-muted">Muddati</div>
-                        </div>
-                    </div>
-                    <div class="plan-body">
-                        <div class="plan-row">
-                            <span class="plan-label">Ustama</span>
-                            <span class="plan-value text-danger">38.00%</span>
-                        </div>
-                        <div class="plan-row">
-                            <span class="plan-label">Muddatli to'lov narxi</span>
-                            <span class="plan-value">2 760 000 so'm</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="plan-card" onclick="selectPlan(this)">
-                    <div class="plan-header d-flex justify-content-center align-items-center gap-3">
-                        <div>
-                            <div class="monthly-amount">143 334 so'm</div>
-                            <div class="small text-muted">Oylik to'lov</div>
-                        </div>
-                        <div class="term-length">
-                            <div class="fw-bold fs-5">24 oy</div>
-                            <div class="small text-muted">Muddati</div>
-                        </div>
-                    </div>
-                    <div class="plan-body">
-                        <div class="plan-row">
-                            <span class="plan-label">Ustama</span>
-                            <span class="plan-value text-danger">72.00%</span>
-                        </div>
-                        <div class="plan-row">
-                            <span class="plan-label">Muddatli to'lov narxi</span>
-                            <span class="plan-value">3 440 000 so'm</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
 
         <div class="mt-5 text-center">
-            <button class="btn btn-warning text-white px-5 py-3 fw-bold rounded-pill shadow"><i class="bi bi-arrow-left ms-2"></i> ORQAGA QAYTISH</button>
+            <button class="btn btn-warning text-white px-5 py-3 fw-bold rounded-pill shadow" onclick="history.back()"><i class="bi bi-arrow-left ms-2"></i> ORQAGA QAYTISH</button>
             <button class="btn btn-warning text-white px-5 py-3 fw-bold rounded-pill shadow">DAVOM ETTIRISH <i class="bi bi-arrow-right ms-2"></i></button>
         </div>
     </div>
 
     <script>
-        function selectPlan(element) {
+        let app_id = null;
+
+        function selectPlan(element,app) {
+            app_id = app
             // Hamma kartalardan 'active' klassini olib tashlash
             document.querySelectorAll('.plan-card').forEach(card => {
                 card.classList.remove('active');

@@ -10,4 +10,4 @@ class UpdateClientForm(forms.ModelForm):
     class Meta:
         model = Client
         fields = '__all__'
-        exclude = ['full_name']
+        exclude = ['full_name','credit_limit']

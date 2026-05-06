@@ -20,6 +20,23 @@ class ContractView(LoginRequiredMixin,View):
         contract = Contract.objects.get(id=contract_id)
         shops = Shop.objects.all()
         return render(request,'contract.html',{"contract":contract,"shops":shops})
+    
+class PlansView(LoginRequiredMixin,View):
+    def get(self,request,contract_id):
+        contract = Contract.objects.get(id=contract_id)
+        applications = Application.objects.all()
+        data = {}
+        for app in applications:
+            payment = round(((contract.amount/100*app.interest) + contract.amount) / app.length)
+            data[app.id] = {
+                "name":app.name,
+                "interest":app.interest,
+                "length":app.length,
+                "monthly_payment":payment,
+                "total_amount":contract.amount,
+                "total_with_interest":payment * app.length
+            }
+        return render(request,"plans.html",{"apps":data})
 
 class ContractsView(LoginRequiredMixin,View):
     def get(self,request):
@@ -46,6 +63,7 @@ class ContractsView(LoginRequiredMixin,View):
         )
         return render(request,'contracts.html',{"contracts":contracts,"start_date":start_date_valid,"end_date":end_date_valid,"pinfl":pinfl})
     
+
 
 class AllClientsView(LoginRequiredMixin,View):
     def get(self,request):
@@ -89,6 +107,8 @@ class EditClientView(LoginRequiredMixin,View):
             new_form.full_name = f"{form.cleaned_data["last_name"]} {form.cleaned_data["first_name"]} {form.cleaned_data["middle_name"]}"
             new_form.save()
             return redirect('client',id=client.id)
+        else:
+            print(form.errors)
         return render(request,'edit-client.html',{"client":client,"form":form})
     
     

@@ -7,6 +7,8 @@ urlpatterns = [
     path('contracts-list/',views.ContractsView.as_view(),name='contracts'),
     path('contract/<uuid:contract_id>/',views.ContractView.as_view(),name='contract'),
 
+    path('payment-plans-view/<uuid:contract_id>/',views.PlansView.as_view(),name='payment_plans'),
+
 
     path('clients-view',views.AllClientsView.as_view(),name='clients'),
 
