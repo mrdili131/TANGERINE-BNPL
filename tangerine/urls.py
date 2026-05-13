@@ -26,5 +26,7 @@ urlpatterns = [
 
     path('create-contract/<uuid:client_id>/',views.create_contract,name='create_contract'),
 
-    path('update-cart/',views.update_cart,name='update_cart')
+    path('update-cart/',views.update_cart,name='update_cart'),
+
+    path('set-payment-plan/<uuid:contract_id>/',views.set_payment_plan,name='set_payment_plan')
 ]

@@ -9,6 +9,7 @@ from django.utils import timezone
 from datetime import datetime
 from django.http import JsonResponse
 import json
+from dateutil.relativedelta import relativedelta
 
 
 class IndexView(LoginRequiredMixin,View):
@@ -24,7 +25,7 @@ class ContractView(LoginRequiredMixin,View):
 class PlansView(LoginRequiredMixin,View):
     def get(self,request,contract_id):
         contract = Contract.objects.get(id=contract_id)
-        applications = Application.objects.all()
+        applications = Application.objects.all().order_by("length")
         data = {}
         for app in applications:
             payment = round(((contract.amount/100*app.interest) + contract.amount) / app.length)
@@ -36,7 +37,7 @@ class PlansView(LoginRequiredMixin,View):
                 "total_amount":contract.amount,
                 "total_with_interest":payment * app.length
             }
-        return render(request,"plans.html",{"apps":data})
+        return render(request,"plans.html",{"apps":data,"contract":contract})
 
 class ContractsView(LoginRequiredMixin,View):
     def get(self,request):
@@ -193,3 +194,29 @@ def update_cart(request):
         return JsonResponse({"status":True})
     except:
         return JsonResponse({"status":False,"msg":"Could not update"})
+
+@login_required
+def set_payment_plan(request,contract_id):
+    today = datetime.now().date()
+    print(contract_id)
+    contract = Contract.objects.get(id=contract_id)
+    MonthlyPayment.objects.filter(contract=contract).delete()
+    if request.method == "POST":
+        app_id = json.loads(request.body).get("app_id")
+        app = Application.objects.get(id=app_id)
+        contract.application = app
+        contract.save()
+        cc = int(today.month)
+        for i in range(1,app.length+1):
+            cc += 1
+            if cc > 12:
+                cc -= 12
+            new_payment = MonthlyPayment(
+                date = today.replace(month=cc).replace(day=contract.pay_day),
+                contract = contract,
+                client = contract.client,
+                amount = round(((contract.amount/100*app.interest) + contract.amount) / app.length)
+            )
+            new_payment.save()
+        return JsonResponse({"status":True})
+

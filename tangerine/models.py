@@ -85,7 +85,13 @@ class Product(models.Model):
         return self.name
 
 class MonthlyPayment(models.Model):
-    pass
+    date = models.DateField(null=True,blank=True) # set not nullable
+    contract = models.ForeignKey(Contract,on_delete=models.CASCADE,related_name='payments')
+    client = models.ForeignKey(Client,on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10,decimal_places=0,default=0)
+
+    def __str__(self):
+        return str(self.date)
 
 class PhoneNumber(models.Model):
     name = models.CharField(max_length=50)

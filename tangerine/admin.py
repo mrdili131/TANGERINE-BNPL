@@ -7,5 +7,6 @@ admin.site.register([
     Application,
     Contract,
     PhoneNumber,
-    Product
+    Product,
+    MonthlyPayment
 ])
